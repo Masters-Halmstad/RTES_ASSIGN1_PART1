@@ -66,9 +66,37 @@ char *reg2str(iRegister);
 void shiftRight(int, iRegister *);
 
 
-/** shifts all the bits of the iRegister to the left by n palces (appends 0 
- *  from the right)
+/**  @brief shifts all the bits of the iRegister to the left by n palces (appends 0 from the right)
+ *
+ *   @param i Is i'th place by which the bits to be shift on left 
+ * 
+ *   @param r A pointer to a memory location of a iRegister data structure.
+ * 
+ *   @return void
+ * 
+ *  Pre-condition: 
+        1. 0 <= i < 32 and 
+        2. iRegister != Null
+ * 
+ *  Post-condition: 
+        1. after shift (i, r) all the bits should be moved left by i
+        2. Rightmost bit (least significant) appends by 0 
+        3. Leftmost bit (most significant) should be descarded
+ *  Properties: 
+ *      1. if j is the position of the bit before shifting such that (i + j <32) then for each bit after shiftLeft 
+            getBit(j, r_before) = getBit(i+j, r_after)
+        2. for j after shiftLeft such that 0<=j<i
+            getBit(j, r_after) = 0 
+        3. above function (getBit(j, r_after) = 0 ) for all j where 32-i<=j<32 is true for the leftmost descarded as well 
+ * 
+ *  test-cases: 
+        1. Allocate memory to an iRegister r 
+        2. first do resetAll(&r)
+        3. set the i'th bit of &r by setBit(i, &r) and repeat for some more bits for eg: i = 0, 14, 23
+        4. call the shiftLeft(i, &r) and display result using 
+            printf("%s",reg2str(r))
  */
+ 
 void shiftLeft(int, iRegister *);
 
 
