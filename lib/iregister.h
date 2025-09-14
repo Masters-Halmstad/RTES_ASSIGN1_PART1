@@ -60,8 +60,36 @@ int getNibble(int, iRegister *);
 char *reg2str(iRegister);
 
 
-/** shifts all the bits of the iRegister to the right by n palces (appends 0 
- *  from the left)
+/** 
+ *   @brief shifts all the bits of the iRegister to the right by n palces (appends 0 from the left)
+ *
+ *   @param i Is i'th place by which the bits to be shift on right
+ * 
+ *   @param r A pointer to a memory location of a iRegister data structure.
+ * 
+ *   @return void
+ * 
+ *  Pre-condition: 
+        1. 0 <= i < 32 and 
+        2. iRegister != Null
+ * 
+ *  Post-condition: 
+        1. after shiftRight(i, r) all the bits should be moved right by i
+        2. Leftmost bit (least significant) appends by 0 
+        3. Rightmost bit (most significant) should be descarded
+ *  Properties: 
+ *      1. if j is the position of the bit before shifting such that (i <= j <32) then for each bit after shiftRight
+            getBit(j, r_before) = getBit(j-i, r_after)
+        2. for j after shiftRight such that 32 - i <= j < 32:
+            getBit(j, r_after) = 0 
+        3. above function (getBit(j, r_after) = 0 ) for all j where 0<=j<i is true for the rightmost descarded as well 
+ * 
+ *  test-cases: 
+        1. Allocate memory to an iRegister r 
+        2. first do resetAll(&r)
+        3. set the i'th bit of &r by setBit(i, &r) and repeat for some more bits for eg: i = 0, 14, 23
+        4. call the shiftRight(i, &r) and display result using 
+            printf("%s",reg2str(r))
  */
 void shiftRight(int, iRegister *);
 
@@ -79,7 +107,7 @@ void shiftRight(int, iRegister *);
         2. iRegister != Null
  * 
  *  Post-condition: 
-        1. after shift (i, r) all the bits should be moved left by i
+        1. after shiftLeft(i, r) all the bits should be moved left by i
         2. Rightmost bit (least significant) appends by 0 
         3. Leftmost bit (most significant) should be descarded
  *  Properties: 
@@ -96,7 +124,6 @@ void shiftRight(int, iRegister *);
         4. call the shiftLeft(i, &r) and display result using 
             printf("%s",reg2str(r))
  */
- 
 void shiftLeft(int, iRegister *);
 
 
@@ -108,22 +135,23 @@ void shiftLeft(int, iRegister *);
  * 
  *  @return void
  * 
- *  Pre-condition: 0 <= i < 32 and iRegister != Null
+ *  Pre-condition: 
+        1. 0 <= i < 32 and 
+        2. iRegister != Null
  * 
- *  Post-condition: after reset(i, r) the i'th bit of iRegister is 0, all other 
- *  bits remain unchanged
+ *  Post-condition: 
+        1. after reset(i, r) the i'th bit of iRegister is 0, all other bits remain unchanged
  *  properties: 
- *  after resetBit(i, r),  getBit(i, r) = 0
- *  if getBit(i, r) == 0 then  
- *    getBit(j, r) returns the same value for all 
- *  0 <= j < 32 and j <> i before and after resetBit(i, r)
- * 
- *  test-cases: 
- *  1,2,3. Allocate memory to an iRegister r
- *  first do resetAll(&r),
- *  then set the i'th bit of &x by setBit(i, &r) for i = 0, 15 and 23 and then
- *  display the result after each and every call by 
- *    printf("%s",reg2str(r)) 
+ *      1. after resetBit(i, r),  getBit(i, r) = 0
+ *      2. if getBit(i, r) == 0 then  
+ *          getBit(j, r) returns the same value for all 
+ *          0 <= j < 32 and j <> i before and after resetBit(i, r)
+ * test-cases: 
+ *  1. Allocate memory to an iRegister r
+ *  2. first do resetAll(&r),
+ *  3. then set the i'th bit of &x by setBit(i, &r) for i = 0, 15 and 23 and then
+ *  4. display the result after each and every call by 
+ *      printf("%s",reg2str(r)) 
  */
 void resetBit(int, iRegister *);
 
