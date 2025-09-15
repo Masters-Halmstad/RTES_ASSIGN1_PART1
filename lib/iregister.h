@@ -52,11 +52,43 @@ void assignNibble(int, int, iRegister *);
 int getNibble(int, iRegister *);
 
 
-/** returns a pointer to an array of 32 characters, with each character 
- *  representing the corresponding bit of the iRegister, i.e., if the bit is set,
- *  then the character is "1" (ASCII char with code 49), or otherwise is "0" 
- *  (ASCII char with code 48)
- */
+ /** 
+ *  @brief returns a pointer to an array of 32 characters, with each character 
+ *     representing the corresponding bit of the iRegister, i.e., if the bit is set,
+ *     then the character is "1" (ASCII char with code 49), or otherwise is "0" 
+ *     (ASCII char with code 48)
+
+ *  @param r An iRegister value whose binary representation is to be converted
+ *           into a string form.
+ *
+ *  @return char* 
+ *     1. A pointer to a null-terminated string of length 32 + 1, where:
+ *     2. Each of the first 32 characters is either '0' or '1'(ASCII 48 or 49), depending on the bit value in the register.
+ *     3. The last character is the null terminator '\0'.
+ *
+ *  Pre-condition:
+ *     1. iRegister != Null.
+ *
+ *  Post-condition:
+ *     1. The returned string contains exactly 32 characters of '0' or '1' corresponding to the bits of the register, with bit 31 (MSB) at index 0
+ *       and bit 0 (LSB) at index 31.
+ *
+ *  Properties:
+ *    - For all j where 0 <= j < 32:
+ *        reg2str(r)[j] = '1' if getBit(31 - j, r) = 1
+ *        reg2str(r)[j] = '0' if getBit(31 - j, r) = 0
+ *    - The string is null-terminated at index 32.
+ *
+ *  Test-cases:
+ *    1. Set value of r = 0x00000000 (all bits reset) and pass to the reg2str(r) the output should be,
+ *       reg2str(r) = "00000000000000000000000000000000"
+ *    2. Similarly check for r = 0xFFFFFFFF (all bits set),
+ *       reg2str(r) = "11111111111111111111111111111111"
+ *    3. If only bit 0 is set,
+ *       reg2str(r) = "00000000000000000000000000000001"
+ *    4. If only bit 31 is set,
+ *       reg2str(r) = "10000000000000000000000000000000"
+*/
 char *reg2str(iRegister);
 
 
