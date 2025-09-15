@@ -42,12 +42,81 @@ void setAll(iRegister *);
 int getBit(int, iRegister *);
 
 
-/** set the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
+/** @brief set the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
+ *
+ *  @param int 
+       pos (1 <= pos <= 8) Indicates which nibble to set:
+ *            - pos = 1 → assign to the least significant nibble (bits 0–3)
+ *            - pos = 2 → assign to the next nibble (bits 4–7)
+ *
+ *  @param int 
+       value The new 4-bit value to assign (0–15).
+ *               Only the lowest 4 bits of this parameter are used; higher bits
+ *               are ignored.
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return void
+ *
+ *  Pre-condition:
+ *    - 1 <= pos <= 8
+ *    - 0 <= value <= 15
+ *    - iRegister != NULL
+ *
+ *  Post-condition:
+ *    - The nibble at the given position is replaced with the given value.
+ *    - All other bits of the register remain unchanged.
+ *
+ *  Properties:
+ *    - assignNibble(pos, v, r) modifies only bits [4*(pos-1) ... 4*pos - 1].
+ *    - After assignment:
+ *        getNibble(pos, r) = value & 0xF
+ *    - For all j not in [4*(pos-1) ... 4*pos - 1], 
+ *        getBit(j, r_after) = getBit(j, r_before)
+ *
+ *  Test-cases:
+ *    1. If r = 0x00000000 and assignNibble(1, 0xA, &r),
+ *       then r = 0x0000000A.
+ *    2. If r = 0x00000000 and assignNibble(2, 0xF, &r),
+ *       then r = 0x000000F0.
+ *    3. If r = 0xFFFFFFFF and assignNibble(8, 0x0, &r),
+ *       then r = 0x0FFFFFFF.
+ *    4. If r = 0x12345678 and assignNibble(3, 0x5, &r),
+ *       then r = 0x12345578.
  */
 void assignNibble(int, int, iRegister *);
 
-
-/** get the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
+ /**
+ *  @brief get the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
+ *
+ *  @param 
+       1. pos Indicates which nibble to retrieve:
+ *             - pos = 1 → bits 0-3 (least significant nibble
+ *             - pos = 2 → return the next nibble (bits 4–7)
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return int 
+ *          An integer value (0–15) corresponding to the nibble extracted.
+ *
+ *  Pre-condition:
+ *     1. 1 <= pos <= 2
+ *     2. iRegister != NULL
+ *
+ *  Post-condition:
+       1. The returned value is between 0-15 i.e 4 bits of the specified nibble 
+       2. The returned should be shifted to least significant position
+       3. Bits outside the first byte are ignored 
+ *
+ *  Properties:
+ *     1. getNibble(pos, r) = (r >> (4 * (pos - 1))) & 0xF
+ *     2. The result is always between 0 and 15 inclusive.
+ *
+ *  Test-cases:
+ *    1. If r = 0x12345678 and pos = 1,
+ *       getNibble(1, &r) = 0x8 (binary 1000).
+ *    2. If r = 0x12345678 and pos = 2,
+ *       getNibble(2, &r) = 0x7 (binary 0111).
  */
 int getNibble(int, iRegister *);
 
