@@ -23,21 +23,117 @@ typedef struct{
  *  Students should follow that format.
  */ 
 
-/** resets all the bits of the iRegister (to 0)
+/** @brief resets all the bits of the iRegister (to 0)
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return void
+ *
+ *  Pre-condition:
+ *    1. iRegister != NULL
+ *
+ *  Post-condition:
+ *    1. After resetAll(r), every bit of the register is 0.
+ *    2. The register value becomes 0x00000000.
+ *
+ *  Properties:
+ *    1. For all j where 0 <= j < 32:
+ *        getBit(j, r_after) = 0
+ *    2. r_after = 0x00000000
+ *
+ *  Test-cases:
+ *    1. If r = 0xFFFFFFFF, after resetAll(&r), r = 0x00000000.
+ *    2. If r = 0x12345678, after resetAll(&r), r = 0x00000000.
+ *    3. If r = 0x00000000, after resetAll(&r), r = 0x00000000 (unchanged).
  */ 
 void resetAll(iRegister *);
 
-/** sets the i'th bit of the iRegister (to 1)
+/** @brief sets the i'th bit of the iRegister (to 1)
+ *
+ *  @param i The bit position to set where  0≤ i < 32
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return void
+ *
+ *  Pre-condition:
+ *    1. 0 ≤ i < 32
+ *    2. iRegister != NULL
+ *
+ *  Post-condition:
+ *    1. After setBit(i, r), the i'th bit of the register is 1.
+ *    2. All other bits remain unchanged.
+ *
+ *  Properties:
+ *    1. setBit(i, r):  
+ *        r_after = r_before | (1 << i)
+ *    2. For the modified bit:
+ *        getBit(i, r_after) = 1
+ *    3. For all j ≠ i:
+ *        getBit(j, r_after) = getBit(j, r_before)
+ *
+ *  Test-cases:
+ *    1. If r = 0x00000000 and i = 0, after setBit(0, &r), r = 0x00000001.
+ *    2. If r = 0x00000000 and i = 5, after setBit(5, &r), r = 0x00000020.
+ *    3. If r = 0xFFFFFFFF and i = 10, after setBit(10, &r), r = 0xFFFFFFFF (unchanged).
+ *    4. If r = 0x0000FF00 and i = 31, after setBit(31, &r), r = 0x8000FF00.
  */
 void setBit(int, iRegister *);
 
 
-/**sets all the bits of the iRegister (to 1)
+/** @brief sets all the bits of the iRegister (to 1)
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return void
+ *
+ *  Pre-condition:
+ *    1. iRegister != NULL
+ *
+ *  Post-condition:
+ *    1. After setAll(r), every bit of the register is 1.
+ *    2. The register value becomes 0xFFFFFFFF.
+ *
+ *  Properties:
+ *    1. For all j where 0 <= j < 32:
+ *        getBit(j, r_after) = 1
+ *    2. r_after = 0xFFFFFFFF
+ *
+ *  Test-cases:
+ *    1. If r = 0x00000000, after setAll(&r), r = 0xFFFFFFFF.
+ *    2. If r = 0x12345678, after setAll(&r), r = 0xFFFFFFFF.
+ *    3. If r = 0xFFFFFFFF, after setAll(&r), r = 0xFFFFFFFF (unchanged).
  */
 void setAll(iRegister *);
 
 
-/** returns the i'th bit of the iRegister as an integer (1 if it is set, or 0 otherwise)
+/** @brief returns the i'th bit of the iRegister as an integer (1 if it is set, or 0 otherwise)
+ *   @param i The bit position to retrieve such that 0 ≤ i < 32
+ *
+ *  @param r A pointer to a memory location of an iRegister data structure.
+ *
+ *  @return int 
+ *          1. 1 if the i'th bit is set
+ *          2. 0 if the i'th bit is not set
+ *
+ *  Pre-condition:
+ *    1. 0 ≤ i < 32
+ *    2. iRegister != NULL
+ *
+ *  Post-condition:
+ *    1. The returned value reflects the state of the i'th bit of the register
+ *    2. Original bits of the register remain unchanged
+ *
+ *  Properties:
+ *    1. getBit(i, r) = ( (*r) >> i ) & 0x1 
+              (Mask logic: get i'th bit to LSB and Perform AND operation to extract exact bit )
+ *    2. Result is always either 0 or 1
+ *
+ *  Test-cases:
+ *    1. If r = 0x00000001 and i = 0, getBit(0, &r) = 1
+ *    2. If r = 0x00000001 and i = 1, getBit(1, &r) = 0
+ *    3. If r = 0x80000000 and i = 31, getBit(31, &r) = 1
+ *    4. If r = 0x00000000 and i = 15, getBit(15, &r) = 0
  */
 int getBit(int, iRegister *);
 
@@ -45,33 +141,33 @@ int getBit(int, iRegister *);
 /** @brief set the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
  *
  *  @param int 
-       pos (1 <= pos <= 8) Indicates which nibble to set:
- *            - pos = 1 → assign to the least significant nibble (bits 0–3)
- *            - pos = 2 → assign to the next nibble (bits 4–7)
+       pos (1 <= pos <=2) Indicates the nibble to be set:
+ *            1. pos = 1 → assign to the least significant nibble (bits 0–3)
+ *            2. pos = 2 → assign to the next nibble (bits 4–7)
  *
  *  @param int 
-       value The new 4-bit value to assign (0–15).
- *               Only the lowest 4 bits of this parameter are used; higher bits
- *               are ignored.
+       1. value the new 4-bit value to assign (0–15).
+ *     2. Only the lowest 4 bits of this parameter are used 
+       3. higher bits are ignored.
  *
  *  @param r A pointer to a memory location of an iRegister data structure.
  *
  *  @return void
  *
  *  Pre-condition:
- *    - 1 <= pos <= 8
- *    - 0 <= value <= 15
- *    - iRegister != NULL
+ *    1. 1 <= pos <= 2
+ *    2. 0 <= value <= 15
+ *    3. iRegister != NULL
  *
  *  Post-condition:
- *    - The nibble at the given position is replaced with the given value.
- *    - All other bits of the register remain unchanged.
+ *    1. The nibble at the given position is replaced with the given value.
+ *    2. All other bits of the register remain unchanged.
  *
  *  Properties:
- *    - assignNibble(pos, v, r) modifies only bits [4*(pos-1) ... 4*pos - 1].
- *    - After assignment:
- *        getNibble(pos, r) = value & 0xF
- *    - For all j not in [4*(pos-1) ... 4*pos - 1], 
+ *    1. assignNibble(pos, v, r) modifies only bits (0-3) 04 (4-7).
+ *    2. After assignment:
+ *        getNibble(pos, r) = value & 0xF (0xF masking make sure value remains 4 bits)
+ *    3. For all j not in pos={1,2},
  *        getBit(j, r_after) = getBit(j, r_before)
  *
  *  Test-cases:
@@ -79,9 +175,9 @@ int getBit(int, iRegister *);
  *       then r = 0x0000000A.
  *    2. If r = 0x00000000 and assignNibble(2, 0xF, &r),
  *       then r = 0x000000F0.
- *    3. If r = 0xFFFFFFFF and assignNibble(8, 0x0, &r),
+ *    3. If r = 0xFFFFFFFF and assignNibble(1, 0x0, &r),
  *       then r = 0x0FFFFFFF.
- *    4. If r = 0x12345678 and assignNibble(3, 0x5, &r),
+ *    4. If r = 0x12345678 and assignNibble(2, 0x5, &r),
  *       then r = 0x12345578.
  */
 void assignNibble(int, int, iRegister *);
