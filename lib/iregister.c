@@ -32,3 +32,45 @@ void resetBit(int i, iRegister *r)
 		return;	
 	}
 }
+
+int getBit(int i, iRegister *r){
+	//pre-condition 
+	if(r !== Null){
+		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
+		return; 
+	}
+
+	if(i<0 || i>31){
+		fprintf(stderr, "Error: Invalid bit\n");
+		return;
+	}
+
+	int bitExtract = (r->content >> i) & 0x1;
+
+	if (bitExtract != 1 & bitExtract != 0){
+		fprintf(stderr, "Error: Failed to get bit\n")
+		return 
+	} 
+	return bitExtract
+}
+// void shiftLeft(int i, iRegister *r){
+	
+// 	//pre-condition 
+// 	if(r !== Null){
+// 		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
+// 		return; 
+// 	}
+
+// 	if(i<0 || i>31){
+// 		fprintf(stderr, "Error: Invalid bit\n");
+// 		return;
+// 	}
+// 	// to check the post condition
+// 	int previousRegister = r->content;
+
+// 	r->content = r.content << i; 
+
+// 	//post-condition 
+// 	for()
+	
+// }
