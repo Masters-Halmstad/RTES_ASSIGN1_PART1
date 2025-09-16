@@ -23,7 +23,8 @@ typedef struct{
  *  Students should follow that format.
  */ 
 
-/** @brief resets all the bits of the iRegister (to 0)
+/** 
+ * @brief resets all the bits of the iRegister (to 0)
  *
  *  @param r A pointer to a memory location of an iRegister data structure.
  *
@@ -48,7 +49,8 @@ typedef struct{
  */ 
 void resetAll(iRegister *);
 
-/** @brief sets the i'th bit of the iRegister (to 1)
+/**
+ *  @brief sets the i'th bit of the iRegister (to 1)
  *
  *  @param i The bit position to set where  0≤ i < 32
  *
@@ -81,7 +83,8 @@ void resetAll(iRegister *);
 void setBit(int, iRegister *);
 
 
-/** @brief sets all the bits of the iRegister (to 1)
+/** 
+ * @brief sets all the bits of the iRegister (to 1)
  *
  *  @param r A pointer to a memory location of an iRegister data structure.
  *

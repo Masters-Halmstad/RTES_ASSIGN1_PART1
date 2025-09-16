@@ -54,6 +54,25 @@ void setBit(int i, iRegister *r)
 	}
 }
 
+void setAll(iRegister *i)
+{
+	// pre-condition
+	if (i == NULL)
+	{
+		fprintf(stderr, "Error: A NULL pointer was given to resetBit\n");
+		return;
+	}
+	// reseting all bits
+	i->content = 0xFFFFFFFF;
+
+	// post-condition
+	if (i->content != 0xFFFFFFFF)
+	{
+		fprintf(stderr, "Error: Could not reset all the bits\n");
+		return;
+	}
+}
+
 int getBit(int i, iRegister *r)
 {
 	// pre-condition
