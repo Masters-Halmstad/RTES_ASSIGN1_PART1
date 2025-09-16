@@ -8,27 +8,48 @@
 #include <stdio.h>
 #include "iregister.h"
 
-void resetBit(int i, iRegister *r)
+void resetAll(iRegister *i)
 {
 	// pre-condition
-	if (r == NULL)
+	if (i == NULL)
 	{
 		fprintf(stderr, "Error: A NULL pointer was given to resetBit\n");
 		return;
 	}
-	// pre-condition
-	if (i < 0 || i > 31)
+	// reseting all bits
+	i->content = 0x00000000;
+
+	// post-condition
+	if (i->content != 0x00000000)
 	{
-		fprintf(stderr, "Error: Invalid bit\n");
+		fprintf(stderr, "Error: Could not reset all the bits\n");
+		return;
+	}
+}
+
+void setBit(int i, iRegister *r)
+{
+	// pre-condition
+	if (r == NULL)
+	{
+		fprintf(stderr, "Error: A NULL pointer was given to setBit\n");
 		return;
 	}
 
-	r->content &= ~(1 << i);
+	// pre-condition
+	if (i < 0 || i > 31)
+	{
+		fprintf(stderr, "Error: Invalid bit index \n");
+		return;
+	}
+
+	// setting the i'th bit
+	r->content |= (1u << i);
 
 	// post-condition
-	if ((r->content & (1 << i)) != 0)
+	if ((r->content & (1u << i)) == 0)
 	{
-		fprintf(stderr, "Error: Failed to reset Bit\n");
+		fprintf(stderr, "Error: Failed to set bit \n");
 		return;
 	}
 }
@@ -96,5 +117,31 @@ void shiftLeft(int i, iRegister *r)
 			fprintf(stderr, "Error: Post-condition failed (least significant bits not cleared)\n");
 			return;
 		}
+	}
+}
+
+
+void resetBit(int i, iRegister *r)
+{
+	// pre-condition
+	if (r == NULL)
+	{
+		fprintf(stderr, "Error: A NULL pointer was given to resetBit\n");
+		return;
+	}
+	// pre-condition
+	if (i < 0 || i > 31)
+	{
+		fprintf(stderr, "Error: Invalid bit\n");
+		return;
+	}
+
+	r->content &= ~(1 << i);
+
+	// post-condition
+	if ((r->content & (1 << i)) != 0)
+	{
+		fprintf(stderr, "Error: Failed to reset Bit\n");
+		return;
 	}
 }
