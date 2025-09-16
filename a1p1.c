@@ -65,37 +65,68 @@
 // }
 
 // code to test shiftRight
+// int main()
+// {
+// 	iRegister reg;
+
+// 	// Test 1: shiftRight(1)
+// 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
+// 	printf("Original register: 0x%08X\n", reg.content);
+// 	shiftRight(1, &reg);
+// 	printf("After shiftRight(1): 0x%08X\n", reg.content);
+// 	// Expected: 0x00000005 (00000000...00000101)
+
+// 	// Test 2: shiftRight(4)
+// 	reg.content = 0x0B;
+// 	shiftRight(4, &reg);
+// 	printf("After shiftRight(4): 0x%08X\n", reg.content);
+// 	// Expected: 0x00000000 (00000000...00000000)
+
+// 	// Test 3: shiftRight(0)
+// 	reg.content = 0x0B;
+// 	shiftRight(0, &reg);
+// 	printf("After shiftRight(0): 0x%08X\n", reg.content);
+// 	// Expected: 0x0000000B (unchanged)
+// 	// but will get error , due to int data type in stucture,
+// 	// on right shift on signed integer most compiler performs airthmetic shift ,
+// 	// So if MSB is 1, shifting right fills in 1s instead of 0s.
+
+// 	// Test 4: shiftRight(31)
+// 	reg.content = 0x80000000; // only MSB set
+// 	shiftRight(31, &reg);
+// 	printf("After shiftRight(31): 0x%08X\n", reg.content);
+// 	// Expected: 0x00000001 (LSB set, all others cleared)
+
+// 	return 0;
+// }
+
+// getNibble
+
 int main()
 {
 	iRegister reg;
 
-	// Test 1: shiftRight(1)
-	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
-	printf("Original register: 0x%08X\n", reg.content);
-	shiftRight(1, &reg);
-	printf("After shiftRight(1): 0x%08X\n", reg.content);
-	// Expected: 0x00000005 (00000000...00000101)
+	// Example 1
+	reg.content = 0x12345678;
+	int nib1 = getNibble(1, &reg);
+	int nib2 = getNibble(2, &reg);
 
-	// Test 2: shiftRight(4)
-	reg.content = 0x0B;
-	shiftRight(4, &reg);
-	printf("After shiftRight(4): 0x%08X\n", reg.content);
-	// Expected: 0x00000000 (00000000...00000000)
+	printf("Register: 0x%08X\n", reg.content);
+	printf("Nibble 1 (LSB): 0x%X\n", nib1); // Expected: 0x8
+	printf("Nibble 2: 0x%X\n", nib2);		// Expected: 0x7
 
-	// Test 3: shiftRight(0)
-	reg.content = 0x0B;
-	shiftRight(0, &reg);
-	printf("After shiftRight(0): 0x%08X\n", reg.content);
-	// Expected: 0x0000000B (unchanged)
-	// but will get error , due to int data type in stucture,
-	// on right shift on signed integer most compiler performs airthmetic shift ,
-	// So if MSB is 1, shifting right fills in 1s instead of 0s.
+	// Example 2
+	reg.content = 0x000000AB;  // 10101011
+	nib1 = getNibble(1, &reg); // Expected 0xB
+	nib2 = getNibble(2, &reg); // Expected 0xA
 
-	// Test 4: shiftRight(31)
-	reg.content = 0x80000000; // only MSB set
-	shiftRight(31, &reg);
-	printf("After shiftRight(31): 0x%08X\n", reg.content);
-	// Expected: 0x00000001 (LSB set, all others cleared)
+	printf("\nRegister: 0x%08X\n", reg.content);
+	printf("Nibble 1 (LSB): 0x%X\n", nib1);
+	printf("Nibble 2: 0x%X\n", nib2);
+
+	// Example 3: Error cases
+	getNibble(3, &reg); // Invalid pos
+	getNibble(1, NULL); // NULL pointer
 
 	return 0;
 }

@@ -98,6 +98,34 @@ int getBit(int i, iRegister *r)
 	return bitExtract;
 }
 
+int getNibble(int pos, iRegister *r)
+{
+	// Pre-condition
+	if (r == NULL)
+	{
+		fprintf(stderr, "Error: NULL pointer passed to getNibble\n");
+		return -1; // indicate error
+	}
+
+	if (pos < 1 || pos > 2)
+	{
+		fprintf(stderr, "Error: Invalid nibble position (must be 1 or 2)\n");
+		return -1;
+	}
+
+	// extract nibble
+	int value = (r->content >> (4 * (pos - 1))) & 0xF;
+
+	// Post-condition checks
+	if (value < 0 || value > 15)
+	{
+		fprintf(stderr, "Error: Post-condition failed: nibble out of range\n");
+		return -1;
+	}
+
+	return value;
+}
+
 void shiftRight(int i, iRegister *r)
 {
 	// pre-condition
