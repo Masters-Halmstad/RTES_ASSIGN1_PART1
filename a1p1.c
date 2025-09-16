@@ -9,32 +9,7 @@
 #include "lib/iregister.h" // include the header file for iRegister and shiftLeft
 #define LINE 80
 
-// int main()
-// {
-// 	iRegister r;
-// 	char str[LINE];
-// 	char c;
-// 	int inumber, inibble, ibit, ishift = 0;
-// 	// Using the uart
-// 	// First, initialize and clear the channel
-// 	// uart_init();
-// 	// uart_clear();
-
-// 	// To Display a string
-// 	// uart_puts("String\n");
-
-// 	// To get one character
-// 	// c=uart_getc();
-
-// 	// However, to get a number, you need to call uart_getc
-// 	// multiple times until receiving a new line.
-// 	// The results of each call to uart_getc can be stored into str
-// 	// atoi(str) will result a number.
-// }
-
-// code for test shiftLeft
-// int main()
-// {
+// void  checkShiftLeft (){
 // 	iRegister reg;		// declare a register
 // 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
 
@@ -62,6 +37,35 @@
 // 	printf("After shiftLeft(31): 0x%08X\n", reg.content);
 
 // 	return 0;
+// }
+
+// int main()
+// {
+// 	iRegister r;
+// 	char str[LINE];
+// 	char c;
+// 	int inumber, inibble, ibit, ishift = 0;
+// 	// Using the uart
+// 	// First, initialize and clear the channel
+// 	// uart_init();
+// 	// uart_clear();
+
+// 	// To Display a string
+// 	// uart_puts("String\n");
+
+// 	// To get one character
+// 	// c=uart_getc();
+
+// 	// However, to get a number, you need to call uart_getc
+// 	// multiple times until receiving a new line.
+// 	// The results of each call to uart_getc can be stored into str
+// 	// atoi(str) will result a number.
+// }
+
+// code for test shiftLeft
+// int main()
+// {
+
 // }
 
 // code to test shiftRight
@@ -102,31 +106,65 @@
 
 // getNibble
 
-int main()
+// int main()
+// {
+// 	iRegister reg;
+
+// 	// Example 1
+// 	reg.content = 0x12345678;
+// 	int nib1 = getNibble(1, &reg);
+// 	int nib2 = getNibble(2, &reg);
+
+// 	printf("Register: 0x%08X\n", reg.content);
+// 	printf("Nibble 1 (LSB): 0x%X\n", nib1); // Expected: 0x8
+// 	printf("Nibble 2: 0x%X\n", nib2);		// Expected: 0x7
+
+// 	// Example 2
+// 	reg.content = 0x000000AB;  // 10101011
+// 	nib1 = getNibble(1, &reg); // Expected 0xB
+// 	nib2 = getNibble(2, &reg); // Expected 0xA
+
+// 	printf("\nRegister: 0x%08X\n", reg.content);
+// 	printf("Nibble 1 (LSB): 0x%X\n", nib1);
+// 	printf("Nibble 2: 0x%X\n", nib2);
+
+// 	// Example 3: Error cases
+// 	getNibble(3, &reg); // Invalid pos
+// 	getNibble(1, NULL); // NULL pointer
+
+// 	return 0;
+// }
+
+int assignNible()
 {
 	iRegister reg;
 
-	// Example 1
+	// Test 1
+	reg.content = 0x00000000;
+	assignNibble(1, 0xA, &reg);
+	printf("After assignNibble(1, 0xA): 0x%08X\n", reg.content); // Expected: 0x0000000A
+
+	// Test 2
+	reg.content = 0x00000000;
+	assignNibble(2, 0xF, &reg);
+	printf("After assignNibble(2, 0xF): 0x%08X\n", reg.content); // Expected: 0x000000F0
+
+	// Test 3
+	reg.content = 0xFFFFFFFF;
+	assignNibble(1, 0x0, &reg);
+	printf("After assignNibble(1, 0x0): 0x%08X\n", reg.content); // Expected: 0xFFFFFFF0
+
+	// Test 4
 	reg.content = 0x12345678;
-	int nib1 = getNibble(1, &reg);
-	int nib2 = getNibble(2, &reg);
+	assignNibble(2, 0x5, &reg);
+	printf("After assignNibble(2, 0x5): 0x%08X\n", reg.content); // Expected: 0x12345578
 
-	printf("Register: 0x%08X\n", reg.content);
-	printf("Nibble 1 (LSB): 0x%X\n", nib1); // Expected: 0x8
-	printf("Nibble 2: 0x%X\n", nib2);		// Expected: 0x7
-
-	// Example 2
-	reg.content = 0x000000AB;  // 10101011
-	nib1 = getNibble(1, &reg); // Expected 0xB
-	nib2 = getNibble(2, &reg); // Expected 0xA
-
-	printf("\nRegister: 0x%08X\n", reg.content);
-	printf("Nibble 1 (LSB): 0x%X\n", nib1);
-	printf("Nibble 2: 0x%X\n", nib2);
-
-	// Example 3: Error cases
-	getNibble(3, &reg); // Invalid pos
-	getNibble(1, NULL); // NULL pointer
+	// Test 5: Invalid value
+	assignNibble(1, 20, &reg); // Error: invalid value
+	// Test 6: Invalid pos
+	assignNibble(3, 0xA, &reg); // Error: invalid pos
+	// Test 7: NULL pointer
+	assignNibble(1, 0x5, NULL); // Error: NULL pointer
 
 	return 0;
 }

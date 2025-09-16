@@ -116,7 +116,7 @@ int getNibble(int pos, iRegister *r)
 	// extract nibble
 	int value = (r->content >> (4 * (pos - 1))) & 0xF;
 
-	// Post-condition checks
+	// Post-condition 
 	if (value < 0 || value > 15)
 	{
 		fprintf(stderr, "Error: Post-condition failed: nibble out of range\n");
@@ -124,6 +124,59 @@ int getNibble(int pos, iRegister *r)
 	}
 
 	return value;
+}
+
+void assignNibble(int pos, int value, iRegister *r)
+{
+    // Pre-condition checks
+    if (r == NULL)
+    {
+        fprintf(stderr, "Error: NULL pointer passed to assignNibble\n");
+        return;
+    }
+
+    if (pos < 1 || pos > 2)
+    {
+        fprintf(stderr, "Error: Invalid nibble position (must be 1 or 2)\n");
+        return;
+    }
+
+    if (value < 0 || value > 15)
+    {
+        fprintf(stderr, "Error: Invalid nibble value (must be 0-15)\n");
+        return;
+    }
+
+    // to check the post condition
+    iRegister r_before = *r;
+
+    // Clear the target nibble first
+    r->content &= ~(0xF << (4 * (pos - 1)));
+
+    // Assign the new value to the nibble
+    r->content |= (value & 0xF) << (4 * (pos - 1));
+
+    // Post-condition checks
+    if (getNibble(pos, r) != (value & 0xF))
+    {
+        fprintf(stderr, "Error: Post-condition failed: nibble not set correctly\n");
+        return;
+    }
+
+    // Ensure other bits remain unchanged
+    int j;
+    for (j = 0; j < 32; j++)
+    {
+        if (pos == 1 && j >= 0 && j <= 3)
+            continue; // skip target nibble
+        if (pos == 2 && j >= 4 && j <= 7)
+            continue; // skip target nibble
+        if (getBit(j, r) != getBit(j, &r_before))
+        {
+            fprintf(stderr, "Error: Post-condition failed: other bits modified\n");
+            return;
+        }
+    }
 }
 
 void shiftRight(int i, iRegister *r)
