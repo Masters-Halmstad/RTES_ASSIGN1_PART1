@@ -35,7 +35,7 @@ void resetBit(int i, iRegister *r)
 
 int getBit(int i, iRegister *r){
 	//pre-condition 
-	if(r !== Null){
+	if(r == Null){
 		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
 		return; 
 	}
@@ -53,24 +53,37 @@ int getBit(int i, iRegister *r){
 	} 
 	return bitExtract
 }
-// void shiftLeft(int i, iRegister *r){
+
+void shiftLeft(int i, iRegister *r){
 	
-// 	//pre-condition 
-// 	if(r !== Null){
-// 		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
-// 		return; 
-// 	}
+	//pre-condition 
+	if(r == Null){
+		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
+		return; 
+	}
 
-// 	if(i<0 || i>31){
-// 		fprintf(stderr, "Error: Invalid bit\n");
-// 		return;
-// 	}
-// 	// to check the post condition
-// 	int previousRegister = r->content;
+	if(i<0 || i>31){
+		fprintf(stderr, "Error: Invalid bit\n");
+		return;
+	}
+	// to check the post condition
+	iRegister r_before = *r;
 
-// 	r->content = r.content << i; 
+	r->content = r.content << i; 
 
-// 	//post-condition 
-// 	for()
-	
-// }
+	let j = 0
+	//post-condition 
+	for(j=0; j<32-i ; j ++){
+		if(getBit(j, &r_before) != getBit(j+i, r)){
+			fprintf(stderr, "Error: Failed to shift bit left\n"); 
+			return
+		}
+	}
+
+	for(j=0 ; j <i ; j++){
+		if(getBit(j, r) != 0){
+			fprintf(stderr, "Error: Bits on teh rightmost is not reset \n");
+			return 
+		}
+	}
+}
