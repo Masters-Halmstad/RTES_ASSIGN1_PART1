@@ -32,33 +32,70 @@
 // 	// atoi(str) will result a number.
 // }
 
+// code for test shiftLeft
+// int main()
+// {
+// 	iRegister reg;		// declare a register
+// 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
+
+// 	printf("Original register: 0x%08X\n", reg.content);
+
+// 	// Test shiftLeft by 1
+// 	shiftLeft(1, &reg);
+// 	printf("After shiftLeft(1): 0x%08X\n", reg.content);
+
+// 	// Reset for next test
+// 	reg.content = 0x0B;
+
+// 	// Test shiftLeft by 4
+// 	shiftLeft(4, &reg);
+// 	printf("After shiftLeft(4): 0x%08X\n", reg.content);
+
+// 	// Test shiftLeft by 0 (no change)
+// 	reg.content = 0x0B;
+// 	shiftLeft(0, &reg);
+// 	printf("After shiftLeft(0): 0x%08X\n", reg.content);
+
+// 	// Test shiftLeft by 31 (edge case)
+// 	reg.content = 0x0B;
+// 	shiftLeft(31, &reg);
+// 	printf("After shiftLeft(31): 0x%08X\n", reg.content);
+
+// 	return 0;
+// }
+
+// code to test shiftRight
 int main()
 {
-	iRegister reg;		// declare a register
+	iRegister reg;
+
+	// Test 1: shiftRight(1)
 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
-
 	printf("Original register: 0x%08X\n", reg.content);
+	shiftRight(1, &reg);
+	printf("After shiftRight(1): 0x%08X\n", reg.content);
+	// Expected: 0x00000005 (00000000...00000101)
 
-	// Test shiftLeft by 1
-	shiftLeft(1, &reg);
-	printf("After shiftLeft(1): 0x%08X\n", reg.content);
-
-	// Reset for next test
+	// Test 2: shiftRight(4)
 	reg.content = 0x0B;
+	shiftRight(4, &reg);
+	printf("After shiftRight(4): 0x%08X\n", reg.content);
+	// Expected: 0x00000000 (00000000...00000000)
 
-	// Test shiftLeft by 4
-	shiftLeft(4, &reg);
-	printf("After shiftLeft(4): 0x%08X\n", reg.content);
-
-	// Test shiftLeft by 0 (no change)
+	// Test 3: shiftRight(0)
 	reg.content = 0x0B;
-	shiftLeft(0, &reg);
-	printf("After shiftLeft(0): 0x%08X\n", reg.content);
+	shiftRight(0, &reg);
+	printf("After shiftRight(0): 0x%08X\n", reg.content);
+	// Expected: 0x0000000B (unchanged)
+	// but will get error , due to int data type in stucture,
+	// on right shift on signed integer most compiler performs airthmetic shift ,
+	// So if MSB is 1, shifting right fills in 1s instead of 0s.
 
-	// Test shiftLeft by 31 (edge case)
-	reg.content = 0x0B;
-	shiftLeft(31, &reg);
-	printf("After shiftLeft(31): 0x%08X\n", reg.content);
+	// Test 4: shiftRight(31)
+	reg.content = 0x80000000; // only MSB set
+	shiftRight(31, &reg);
+	printf("After shiftRight(31): 0x%08X\n", reg.content);
+	// Expected: 0x00000001 (LSB set, all others cleared)
 
 	return 0;
 }

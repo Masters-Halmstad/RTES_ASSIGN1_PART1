@@ -79,6 +79,49 @@ int getBit(int i, iRegister *r)
 	return bitExtract;
 }
 
+void shiftRight(int i, iRegister *r)
+{
+	// pre-condition
+	if (r == NULL)
+	{
+		fprintf(stderr, "Error: A NULL pointer was given to shiftRight\n");
+		return;
+	}
+
+	if (i < 0 || i > 31)
+	{
+		fprintf(stderr, "Error: Invalid shift amount\n");
+		return;
+	}
+
+	// to check the post condition
+	iRegister r_before = *r;
+
+	r->content = r->content >> i;
+
+	int j;
+
+	// post-condition: check shifted bits
+	for (j = i; j < 32; j++)
+	{
+		if (getBit(j, &r_before) != getBit(j - i, r))
+		{
+			fprintf(stderr, "Error: Post-condition failed (bits not shifted correctly)\n");
+			return;
+		}
+	}
+
+	// post-condition: check most significant i bits are 0
+	for (j = 32 - i; j < 32; j++)
+	{
+		if (getBit(j, r) != 0)
+		{
+			fprintf(stderr, "Error: Post-condition failed (most significant bits not cleared)\n");
+			return;
+		}
+	}
+}
+
 void shiftLeft(int i, iRegister *r)
 {
 
@@ -119,7 +162,6 @@ void shiftLeft(int i, iRegister *r)
 		}
 	}
 }
-
 
 void resetBit(int i, iRegister *r)
 {
