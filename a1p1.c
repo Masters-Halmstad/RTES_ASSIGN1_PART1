@@ -51,7 +51,7 @@ int main()
 	uart_puts("\n");
 
 	// print welcome message
-	uart_puts('Welcome, ');
+	uart_puts("Welcome, ");
 	uart_puts(str);
 	uart_puts('\n');
 
