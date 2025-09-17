@@ -35,7 +35,7 @@ void stringInput(char *str)
 void uart_putI(int i)
 {
 	char buffer[LINE];
-	sprintf(buffer, "%d", i); // Convert integer to string using sprintf
+	sprintf(buffer, "%d", i);
 	uart_puts(buffer);
 }
 
@@ -44,7 +44,6 @@ int main()
 	iRegister r;
 	char name[LINE];
 	char str[LINE];
-	// char intIntoString[LINE];
 	int inumber, inibble, ibit, ishift = 0, v;
 	char *stringBit; // to store the bits in string form
 
@@ -86,7 +85,7 @@ int main()
 	uart_puts("\n");
 
 	// input number of bits to shift position
-	uart_puts("Enter the number of bits to shift (0<=inibble<=2): ");
+	uart_puts("Enter the number of bits to shift (0<=ishift<=2): ");
 	stringInput(str);
 	ishift = atoi(str);
 	uart_putI(ishift);
@@ -127,7 +126,7 @@ int main()
 	// to set bit
 	r.content = inumber;
 	setBit(ibit, &r);
-	uart_puts("setBit(&r) returned ");
+	uart_puts("setBit(ibit, &r) returned ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
@@ -158,14 +157,14 @@ int main()
 
 	// get shiftLeft
 	r.content = inumber;
-	shiftLeft(ibit, &r);
+	shiftLeft(ishift, &r);
 	uart_puts("shiftLeft(ibit, &r) returned ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
 	// get shiftRight
 	r.content = inumber;
-	shiftRight(ibit, &r);
+	shiftRight(ishift, &r);
 	uart_puts("shiftRight(ibit, &r) returned ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
