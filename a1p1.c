@@ -11,36 +11,6 @@
 #include "lib/iregister.h" // include the header file for iRegister and shiftLeft
 #define LINE 80
 
-// void  checkShiftLeft (){
-// 	iRegister reg;		// declare a register
-// 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
-
-// 	printf("Original register: 0x%08X\n", reg.content);
-
-// 	// Test shiftLeft by 1
-// 	shiftLeft(1, &reg);
-// 	printf("After shiftLeft(1): 0x%08X\n", reg.content);
-
-// 	// Reset for next test
-// 	reg.content = 0x0B;
-
-// 	// Test shiftLeft by 4
-// 	shiftLeft(4, &reg);
-// 	printf("After shiftLeft(4): 0x%08X\n", reg.content);
-
-// 	// Test shiftLeft by 0 (no change)
-// 	reg.content = 0x0B;
-// 	shiftLeft(0, &reg);
-// 	printf("After shiftLeft(0): 0x%08X\n", reg.content);
-
-// 	// Test shiftLeft by 31 (edge case)
-// 	reg.content = 0x0B;
-// 	shiftLeft(31, &reg);
-// 	printf("After shiftLeft(31): 0x%08X\n", reg.content);
-
-// 	return 0;
-// }
-
 void stringInput(char *str)
 {
 	char c;
@@ -116,7 +86,8 @@ int main()
 	// Print the entered message
 	uart_puts("You Entered: ");
 	uart_puts("Number: ");
-	stringBit = reg2str(inumber);
+	r.content = inumber;
+	stringBit = reg2str(r);
 	uart_puts(stringBit);
 	free(stringBit);
 	uart_puts('\n');
@@ -213,143 +184,4 @@ int main()
 	// multiple times until receiving a new line.
 	// The results of each call to uart_getc can be stored into str
 	// atoi(str) will result a number.
-}
-
-// code for test shiftLeft
-// int main()
-// {
-
-// }
-
-// code to test shiftRight
-// int main()
-// {
-// 	iRegister reg;
-
-// 	// Test 1: shiftRight(1)
-// 	reg.content = 0x0B; // binary: 00000000 00000000 00000000 00001011
-// 	printf("Original register: 0x%08X\n", reg.content);
-// 	shiftRight(1, &reg);
-// 	printf("After shiftRight(1): 0x%08X\n", reg.content);
-// 	// Expected: 0x00000005 (00000000...00000101)
-
-// 	// Test 2: shiftRight(4)
-// 	reg.content = 0x0B;
-// 	shiftRight(4, &reg);
-// 	printf("After shiftRight(4): 0x%08X\n", reg.content);
-// 	// Expected: 0x00000000 (00000000...00000000)
-
-// 	// Test 3: shiftRight(0)
-// 	reg.content = 0x0B;
-// 	shiftRight(0, &reg);
-// 	printf("After shiftRight(0): 0x%08X\n", reg.content);
-// 	// Expected: 0x0000000B (unchanged)
-// 	// but will get error , due to int data type in stucture,
-// 	// on right shift on signed integer most compiler performs airthmetic shift ,
-// 	// So if MSB is 1, shifting right fills in 1s instead of 0s.
-
-// 	// Test 4: shiftRight(31)
-// 	reg.content = 0x80000000; // only MSB set
-// 	shiftRight(31, &reg);
-// 	printf("After shiftRight(31): 0x%08X\n", reg.content);
-// 	// Expected: 0x00000001 (LSB set, all others cleared)
-
-// 	return 0;
-// }
-
-// getNibble
-
-// int main()
-// {
-// 	iRegister reg;
-
-// 	// Example 1
-// 	reg.content = 0x12345678;
-// 	int nib1 = getNibble(1, &reg);
-// 	int nib2 = getNibble(2, &reg);
-
-// 	printf("Register: 0x%08X\n", reg.content);
-// 	printf("Nibble 1 (LSB): 0x%X\n", nib1); // Expected: 0x8
-// 	printf("Nibble 2: 0x%X\n", nib2);		// Expected: 0x7
-
-// 	// Example 2
-// 	reg.content = 0x000000AB;  // 10101011
-// 	nib1 = getNibble(1, &reg); // Expected 0xB
-// 	nib2 = getNibble(2, &reg); // Expected 0xA
-
-// 	printf("\nRegister: 0x%08X\n", reg.content);
-// 	printf("Nibble 1 (LSB): 0x%X\n", nib1);
-// 	printf("Nibble 2: 0x%X\n", nib2);
-
-// 	// Example 3: Error cases
-// 	getNibble(3, &reg); // Invalid pos
-// 	getNibble(1, NULL); // NULL pointer
-
-// 	return 0;
-// }
-
-// int assignNible()
-// {
-// 	iRegister reg;
-
-// 	// Test 1
-// 	reg.content = 0x00000000;
-// 	assignNibble(1, 0xA, &reg);
-// 	printf("After assignNibble(1, 0xA): 0x%08X\n", reg.content); // Expected: 0x0000000A
-
-// 	// Test 2
-// 	reg.content = 0x00000000;
-// 	assignNibble(2, 0xF, &reg);
-// 	printf("After assignNibble(2, 0xF): 0x%08X\n", reg.content); // Expected: 0x000000F0
-
-// 	// Test 3
-// 	reg.content = 0xFFFFFFFF;
-// 	assignNibble(1, 0x0, &reg);
-// 	printf("After assignNibble(1, 0x0): 0x%08X\n", reg.content); // Expected: 0xFFFFFFF0
-
-// 	// Test 4
-// 	reg.content = 0x12345678;
-// 	assignNibble(2, 0x5, &reg);
-// 	printf("After assignNibble(2, 0x5): 0x%08X\n", reg.content); // Expected: 0x12345578
-
-// 	// Test 5: Invalid value
-// 	assignNibble(1, 20, &reg); // Error: invalid value
-// 	// Test 6: Invalid pos
-// 	assignNibble(3, 0xA, &reg); // Error: invalid pos
-// 	// Test 7: NULL pointer
-// 	assignNibble(1, 0x5, NULL); // Error: NULL pointer
-
-// 	return 0;
-// }
-
-int reg2str()
-{
-	iRegister reg;
-	char *str;
-
-	// Test 1: All bits reset
-	reg.content = 0x00000000;
-	str = reg2str(reg);
-	printf("reg2str(0x00000000): %s\n", str); // Expected: 32 zeros
-	free(str);
-
-	// Test 2: All bits set
-	reg.content = 0xFFFFFFFF;
-	str = reg2str(reg);
-	printf("reg2str(0xFFFFFFFF): %s\n", str); // Expected: 32 ones
-	free(str);
-
-	// Test 3: Only LSB set
-	reg.content = 0x00000001;
-	str = reg2str(reg);
-	printf("reg2str(0x00000001): %s\n", str); // Expected: 31 zeros + "1"
-	free(str);
-
-	// Test 4: Only MSB set
-	reg.content = 0x80000000;
-	str = reg2str(reg);
-	printf("reg2str(0x80000000): %s\n", str); // Expected: "1" + 31 zeros
-	free(str);
-
-	return 0;
 }
