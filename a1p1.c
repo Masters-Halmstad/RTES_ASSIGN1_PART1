@@ -31,6 +31,13 @@ void stringInput(char *str)
 	};
 }
 
+void intToString(int i)
+{
+	char buffer[12];
+	sprintf(buffer, "%d", i); // Convert integer to string using sprintf
+	uart_puts(buffer);		  // Send the string via UART
+}
+
 int main()
 {
 	iRegister r;
@@ -52,35 +59,35 @@ int main()
 
 	// print welcome message
 	uart_puts("Welcome, ");
-	uart_puts(str);
+	uart_puts(name);
 	uart_puts('\n');
 
 	// input integer number
 	uart_puts("Enter a integer number (32 bit): ");
 	stringInput(str);
 	inumber = atoi(str);
-	uart_puts(inumber);
+	intToString(inumber);
 	uart_puts('\n');
 
 	// input bit position
 	uart_puts("Enter the bit position (0<=ibit<=31): ");
 	stringInput(str);
 	ibit = atoi(str);
-	uart_puts(ibit);
+	intToString(ibit);
 	uart_puts('\n');
 
 	// input nibble position
 	uart_puts("Enter the nibble position (0<=inibble<=2): ");
 	stringInput(str);
 	inibble = atoi(str);
-	uart_puts(inibble);
+	intToString(inibble);
 	uart_puts('\n');
 
 	// input number of bits to shift position
 	uart_puts("Enter the number of bits to shift (0<=inibble<=2): ");
 	stringInput(str);
 	inibble = atoi(str);
-	uart_puts(inibble);
+	intToString(inibble);
 	uart_puts('\n');
 
 	// Print the entered message
@@ -96,7 +103,7 @@ int main()
 	uart_puts(ibit);
 	uart_puts(",");
 	uart_puts("Nibble: ");
-	uart_puts(inibble);
+	intToString(inibble);
 	uart_puts('\n');
 
 	// to reset all bits
