@@ -7,8 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <uart.h>
-#include "lib/iregister.h" // include the header file for iRegister and shiftLeft
+#include "lib/uart.h"
+#include "lib/iregister.h"
+
 #define LINE 80
 
 void stringInput(char *str)
@@ -31,11 +32,11 @@ void stringInput(char *str)
 	};
 }
 
-void intToString(int i)
+void uart_putI(int i)
 {
-	char buffer[12];
+	char buffer[LINE];
 	sprintf(buffer, "%d", i); // Convert integer to string using sprintf
-	uart_puts(buffer);		  // Send the string via UART
+	uart_puts(buffer);
 }
 
 int main()
@@ -43,8 +44,8 @@ int main()
 	iRegister r;
 	char name[LINE];
 	char str[LINE];
-	char intIntoString[LINE];
-	int inumber, inibble, ibit, ishift = 0;
+	// char intIntoString[LINE];
+	int inumber, inibble, ibit, ishift = 0, v;
 	char *stringBit; // to store the bits in string form
 
 	// initializing and clearing the channel
@@ -53,6 +54,7 @@ int main()
 
 	uart_puts("========= RTES Assignement 1 Part 1 =========================");
 	// input name
+	uart_puts("\n");
 	uart_puts("Enter your name: ");
 	stringInput(name);
 	uart_puts("\n");
@@ -60,35 +62,35 @@ int main()
 	// print welcome message
 	uart_puts("Welcome, ");
 	uart_puts(name);
-	uart_puts('\n');
+	uart_puts("\n");
 
 	// input integer number
 	uart_puts("Enter a integer number (32 bit): ");
 	stringInput(str);
 	inumber = atoi(str);
-	intToString(inumber);
-	uart_puts('\n');
+	uart_putI(inumber);
+	uart_puts("\n");
 
 	// input bit position
 	uart_puts("Enter the bit position (0<=ibit<=31): ");
 	stringInput(str);
 	ibit = atoi(str);
-	intToString(ibit);
-	uart_puts('\n');
+	uart_putI(ibit);
+	uart_puts("\n");
 
 	// input nibble position
 	uart_puts("Enter the nibble position (0<=inibble<=2): ");
 	stringInput(str);
 	inibble = atoi(str);
-	intToString(inibble);
-	uart_puts('\n');
+	uart_putI(inibble);
+	uart_puts("\n");
 
 	// input number of bits to shift position
 	uart_puts("Enter the number of bits to shift (0<=inibble<=2): ");
 	stringInput(str);
-	inibble = atoi(str);
-	intToString(inibble);
-	uart_puts('\n');
+	ishift = atoi(str);
+	uart_putI(ishift);
+	uart_puts("\n");
 
 	// Print the entered message
 	uart_puts("You Entered: ");
@@ -97,14 +99,16 @@ int main()
 	stringBit = reg2str(r);
 	uart_puts(stringBit);
 	free(stringBit);
-	uart_puts('\n');
+	uart_puts("\n");
 
 	uart_puts("Bit: ");
-	uart_puts(ibit);
+	uart_putI(ibit);
+
+	// uart_puts(ibit);
 	uart_puts(",");
 	uart_puts("Nibble: ");
-	intToString(inibble);
-	uart_puts('\n');
+	uart_putI(inibble);
+	uart_puts("\n");
 
 	// to reset all bits
 	r.content = inumber;
@@ -129,22 +133,19 @@ int main()
 
 	// get bit
 	r.content = inumber;
-	getBit(inumber, &r);
-	uart_puts("getBit(i, &r) returned ");
-	uart_puts(reg2str(r));
-	uart_puts("\n");
-
-	// get bit
-	r.content = inumber;
 	getBit(ibit, &r);
 	uart_puts("getBit(i, &r) returned ");
+	uart_putI(getBit(ibit, &r));
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
 	// get nibble
 	r.content = inumber;
-	getNibble(inibble, &r);
+	v = getNibble(inibble, &r);
 	uart_puts("getNibble(i, &r) returned ");
+	uart_putI(v);
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
