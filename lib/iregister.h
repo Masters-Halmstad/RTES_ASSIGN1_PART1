@@ -13,7 +13,7 @@
  */
 typedef struct
 {
-       int content;
+       unsigned int content;
 } iRegister;
 
 /**
