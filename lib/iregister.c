@@ -79,21 +79,21 @@ int getBit(int i, iRegister *r)
 	if (r == NULL)
 	{
 		fprintf(stderr, "Error: A NULL pointer was given to shiftLeft\n");
-		return 0;
+		return -1;
 	}
 
 	if (i < 0 || i > 31)
 	{
 		fprintf(stderr, "Error: Invalid bit\n");
-		return 0;
+		return -1;
 	}
 
 	int bitExtract = (r->content >> i) & 0x1;
 
-	if (bitExtract != 1 & bitExtract != 0)
+	if ((bitExtract != 1) & (bitExtract != 0))
 	{
 		fprintf(stderr, "Error: Failed to get bit\n");
-		return 0;
+		return -1;
 	}
 	return bitExtract;
 }
@@ -107,9 +107,9 @@ int getNibble(int pos, iRegister *r)
 		return -1; // indicate error
 	}
 
-	if (pos < 1 || pos > 2)
+	if (pos < 0 || pos > 7)
 	{
-		fprintf(stderr, "Error: Invalid nibble position (must be 1 or 2)\n");
+		fprintf(stderr, "Error: Invalid nibble position (must be between 0 to 7)\n");
 		return -1;
 	}
 
@@ -126,25 +126,25 @@ int getNibble(int pos, iRegister *r)
 	return value;
 }
 
-void assignNibble(int pos, int value, iRegister *r)
+int assignNibble(int pos, int value, iRegister *r)
 {
 	// Pre-condition checks
 	if (r == NULL)
 	{
 		fprintf(stderr, "Error: NULL pointer passed to assignNibble\n");
-		return;
+		return -1;
 	}
 
-	if (pos < 1 || pos > 2)
+	if (pos < 0 || pos > 7)
 	{
 		fprintf(stderr, "Error: Invalid nibble position (must be 1 or 2)\n");
-		return;
+		return -1;
 	}
 
 	if (value < 0 || value > 15)
 	{
 		fprintf(stderr, "Error: Invalid nibble value (must be 0-15)\n");
-		return;
+		return -1;
 	}
 
 	// to check the post condition
@@ -160,7 +160,7 @@ void assignNibble(int pos, int value, iRegister *r)
 	if (getNibble(pos, r) != (value & 0xF))
 	{
 		fprintf(stderr, "Error: Post-condition failed: nibble not set correctly\n");
-		return;
+		return -1;
 	}
 
 	// Ensure other bits remain unchanged
@@ -174,9 +174,11 @@ void assignNibble(int pos, int value, iRegister *r)
 		if (getBit(j, r) != getBit(j, &r_before))
 		{
 			fprintf(stderr, "Error: Post-condition failed: other bits modified\n");
-			return;
+			return -1;
 		}
 	}
+
+	return getNibble(pos, r);
 }
 
 char *reg2str(iRegister r)

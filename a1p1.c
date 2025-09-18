@@ -78,14 +78,14 @@ int main()
 	uart_puts("\n");
 
 	// input nibble position
-	uart_puts("Enter the nibble position (0<=inibble<=2): ");
+	uart_puts("Enter the nibble position (0<=inibble<=7): ");
 	stringInput(str);
 	inibble = atoi(str);
 	uart_putI(inibble);
 	uart_puts("\n");
 
 	// input number of bits to shift position
-	uart_puts("Enter the number of bits to shift (0<=ishift<=2): ");
+	uart_puts("Enter the number of bits to shift (0<=ishift<=31): ");
 	stringInput(str);
 	ishift = atoi(str);
 	uart_putI(ishift);
@@ -102,9 +102,7 @@ int main()
 
 	uart_puts("Bit: ");
 	uart_putI(ibit);
-
-	// uart_puts(ibit);
-	uart_puts(",");
+	uart_puts(", ");
 	uart_puts("Nibble: ");
 	uart_putI(inibble);
 	uart_puts("\n");
@@ -125,15 +123,22 @@ int main()
 
 	// to set bit
 	r.content = inumber;
-	setBit(ibit, &r);
 	uart_puts("setBit(ibit, &r) returned ");
+	// Check pre-condition
+	if (ibit < 0 || ibit > 31)
+	{
+		uart_puts("-1");
+	}else{
+		setBit(ibit, &r);
+	}
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
 	// get bit
 	r.content = inumber;
 	getBit(ibit, &r);
-	uart_puts("getBit(i, &r) returned ");
+	uart_puts("getBit(ibit, &r) returned ");
 	uart_putI(getBit(ibit, &r));
 	uart_puts("  ");
 	uart_puts(reg2str(r));
@@ -142,7 +147,7 @@ int main()
 	// get nibble
 	r.content = inumber;
 	v = getNibble(inibble, &r);
-	uart_puts("getNibble(i, &r) returned ");
+	uart_puts("getNibble(inibble, &r) returned ");
 	uart_putI(v);
 	uart_puts("  ");
 	uart_puts(reg2str(r));
@@ -150,29 +155,51 @@ int main()
 
 	// get assignNibble
 	r.content = inumber;
-	assignNibble(inibble, inumber, &r);
 	uart_puts("assignNibble(inibble, inumber, &r) returned ");
+	uart_putI(assignNibble(inibble, inumber, &r));
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
 	// get shiftLeft
 	r.content = inumber;
-	shiftLeft(ishift, &r);
 	uart_puts("shiftLeft(ibit, &r) returned ");
+	// Check pre-condition
+	if (ishift < 0 || ishift > 31)
+	{
+		uart_puts("-1");
+	}else{
+		shiftLeft(ishift, &r);
+	}
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
 	// get shiftRight
 	r.content = inumber;
-	shiftRight(ishift, &r);
 	uart_puts("shiftRight(ibit, &r) returned ");
+	// Check pre-condition
+	if (ishift < 0 || ishift > 31)
+	{
+		uart_puts("-1");
+	}else{
+		shiftRight(ishift, &r);
+	}
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 
-	// get shiftRight
+	// resetbit
 	r.content = inumber;
-	resetBit(ibit, &r);
 	uart_puts("resetBit(ibit, &r) returned ");
+	// Check pre-condition
+	if (ibit < 0 || ibit > 31)
+	{
+		uart_puts("-1");
+	}else{
+		resetBit(ibit, &r);
+	}
+	uart_puts("  ");
 	uart_puts(reg2str(r));
 	uart_puts("\n");
 

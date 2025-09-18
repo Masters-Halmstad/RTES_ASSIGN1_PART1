@@ -163,6 +163,7 @@ int getBit(int, iRegister *);
  *  Post-condition:
  *    1. The nibble at the given position is replaced with the given value.
  *    2. All other bits of the register remain unchanged.
+ *    3. Return nibble value that should be equal to the value 
  *
  *  Properties:
  *    1. assignNibble(pos, v, r) modifies only bits (0-3) 04 (4-7).
@@ -181,15 +182,15 @@ int getBit(int, iRegister *);
  *    4. If r = 0x12345678 and assignNibble(2, 0x5, &r),
  *       then r = 0x12345578.
  */
-void assignNibble(int, int, iRegister *);
+int assignNibble(int, int, iRegister *);
 
 /**
-*  @brief get the first (for pos=1) or the second (for pos=2) four bits of iRegsiter
+*  @brief get the four bits of iRegsiter from pos=0 to pos = 7
 *
 *  @param
-      1. pos Indicates which nibble to retrieve:
-*             - pos = 1 → bits 0-3 (least significant nibble
-*             - pos = 2 → return the next nibble (bits 4–7)
+      1. pos (0<=pos<=7) Indicates which nibble to retrieve:
+*             - pos = 1 → bits 0-3 (least significant nibble)
+*             - pos = 7 → bits 28-31 (Most significant nibble)
 *
 *  @param r A pointer to a memory location of an iRegister data structure.
 *
@@ -197,7 +198,7 @@ void assignNibble(int, int, iRegister *);
 *          An integer value (0–15) corresponding to the nibble extracted.
 *
 *  Pre-condition:
-*     1. 1 <= pos <= 2
+*     1. 1 <= pos <= 7
 *     2. iRegister != NULL
 *
 *  Post-condition:
