@@ -112,6 +112,7 @@ int main()
 	resetAll(&r);
 	uart_puts("resetAll(&r) returned ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// to set all bits
@@ -119,6 +120,7 @@ int main()
 	setAll(&r);
 	uart_puts("setAll(&r) returned ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// to set bit
@@ -128,11 +130,14 @@ int main()
 	if (ibit < 0 || ibit > 31)
 	{
 		uart_puts("-1");
-	}else{
+	}
+	else
+	{
 		setBit(ibit, &r);
 	}
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// get bit
@@ -142,6 +147,7 @@ int main()
 	uart_putI(getBit(ibit, &r));
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// get nibble
@@ -151,6 +157,7 @@ int main()
 	uart_putI(v);
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// get assignNibble
@@ -159,6 +166,7 @@ int main()
 	uart_putI(assignNibble(inibble, inumber, &r));
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// get shiftLeft
@@ -168,11 +176,14 @@ int main()
 	if (ishift < 0 || ishift > 31)
 	{
 		uart_puts("-1");
-	}else{
+	}
+	else
+	{
 		shiftLeft(ishift, &r);
 	}
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// get shiftRight
@@ -182,11 +193,14 @@ int main()
 	if (ishift < 0 || ishift > 31)
 	{
 		uart_puts("-1");
-	}else{
+	}
+	else
+	{
 		shiftRight(ishift, &r);
 	}
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// resetbit
@@ -196,11 +210,14 @@ int main()
 	if (ibit < 0 || ibit > 31)
 	{
 		uart_puts("-1");
-	}else{
+	}
+	else
+	{
 		resetBit(ibit, &r);
 	}
 	uart_puts("  ");
 	uart_puts(reg2str(r));
+	free(stringBit);
 	uart_puts("\n");
 
 	// Using the uart

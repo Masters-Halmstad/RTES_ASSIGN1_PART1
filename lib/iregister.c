@@ -10,6 +10,7 @@
 
 void resetAll(iRegister *i)
 {
+
 	// pre-condition
 	if (i == NULL)
 	{
@@ -167,10 +168,8 @@ int assignNibble(int pos, int value, iRegister *r)
 	int j;
 	for (j = 0; j < 32; j++)
 	{
-		if (pos == 1 && j >= 0 && j <= 3)
-			continue; // skip target nibble
-		if (pos == 2 && j >= 4 && j <= 7)
-			continue; // skip target nibble
+		if (j >= (4 * (pos - 1)) && j <= ((4 * (pos - 1)) + 3)) //  start nibble bit = 4*(pos-1) ,, end niblle bit = start_bit +3
+			continue;											// skip target nibble
 		if (getBit(j, r) != getBit(j, &r_before))
 		{
 			fprintf(stderr, "Error: Post-condition failed: other bits modified\n");
